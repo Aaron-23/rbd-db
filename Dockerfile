@@ -12,7 +12,7 @@ RUN rm -rf /etc/yum.repos.d/percona* \
     chmod +rw /var/lib/mysql; \
     chmod 755 /etc/percona-server.conf.d
 EXPOSE 3306
-VOLUME ["/var/lib/mysql", "/var/log/mysql","/etc/percona-server.conf.d"]
+VOLUME ["/var/lib/mysql", "/var/log/mysql"]
 # change ENTRYPOINT exec some custom command
 ENTRYPOINT [ "/run/docker-entrypoint.sh" ]
 CMD [ "mysqld", "--user=root" ]
