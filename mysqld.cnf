@@ -24,6 +24,7 @@ socket=/var/lib/mysql/mysql.sock
 symbolic-links=0
 
 #log-error=/var/log/mysqld.log
+log_error_verbosity=1
 pid-file=/var/run/mysqld/mysqld.pid
 
 bind-address = 0.0.0.0
