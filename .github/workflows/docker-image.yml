@@ -1,18 +1,29 @@
-name: Docker Image CI
+name: Docker Build And Push To Aliyun Hub
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
-
   build:
-
+    name: Build Dockerfile
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag rbd-db:$(date +%s)
+      - name: Git Checkout Code
+        uses: actions/checkout@v1
+        id: git_checkout
+
+      - name: Build Docker Image
+        id: buildAndPushImage
+        uses: risfeng/docker-image-build-push-action@v1.0
+        with:
+          registry_url: 'registry.cn-beijing.aliyuncs.com'
+          namespaces: 'airspace'
+          repository_name: 'rbd-db'
+          user_name: ${{ secrets.ALIYUN_IMAGES_HUB_USER_NAME }}
+          password: ${{ secrets.ALIYUN_IMAGES_HUB_TOKEN }}
+          image_version: '$(date +%s)'
+          docker_file: '.'
+      - name: Get pre step result output image_pull_url
+        run: echo "The time was ${{ steps.buildAndPushImage.outputs.image_pull_url }}"
